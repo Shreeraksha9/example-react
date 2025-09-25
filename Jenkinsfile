@@ -22,6 +22,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 bat 'npm install'
+                bat 'npm install --save-dev sonar-scanner'
             }
         }
 
@@ -47,12 +48,7 @@ pipeline {
             steps {
                 withSonarQubeEnv('MySonar') {
                     // Pass coverage report to SonarQube
-                    bat '''
-                        sonar-scanner ^
-                          -Dsonar.projectKey=example-react ^
-                          -Dsonar.sources=src ^
-                          -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-                    '''
+                    bat '.\\node_modules\\.bin\\sonar-scanner.cmd'
                 }
             }
         }
